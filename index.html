@@ -63,6 +63,7 @@ header p{color:var(--dim);font-size:12px;letter-spacing:.1em;max-width:46ch}
 @media (max-width:560px){.rule{gap:.8rem}.num{flex-basis:2.6rem}}
 @media (prefers-reduced-motion:reduce){#grain{animation:none}.glitch .txt{animation:none}}
 </style>
+<script src="scares.js" defer></script>
 </head>
 <body>
 
@@ -155,7 +156,7 @@ header p{color:var(--dim);font-size:12px;letter-spacing:.1em;max-width:46ch}
     "Teeth are not a sign of friendliness.",
     "If you are given a key, you have been given a door."
   ];
-  const T2 = [() => pick(T2S), ...T1];
+  const T2 = [() => pick(T2S), () => pick(window.EX_A||T2S), () => pick(window.EX_B||T2S), ...T1];
   const T3S = [
     "You have been here longer than you think.",
     "It is reading this with you.",
@@ -175,7 +176,7 @@ header p{color:var(--dim);font-size:12px;letter-spacing:.1em;max-width:46ch}
     "The rules are not for you. They are for what is standing next to you."
   ];
   const T3 = [
-    () => pick(T3S),
+    () => pick(T3S), () => pick(window.EX_B||T3S), () => pick(window.EX_B||T3S), () => pick(window.EX_A||T3S),
     () => `You have read ${depth} rules. ${pick(["It is enough.","It is not enough.","It is counting too.","It has stopped counting."])}`,
     () => `Rule ${rint(depth)+1} was removed. You are not permitted to know what it said.`,
     () => pick(T2S)
@@ -272,7 +273,7 @@ header p{color:var(--dim);font-size:12px;letter-spacing:.1em;max-width:46ch}
   }
   function updateHud() {
     const c = level(depth);
-    hud.textContent = "READ: " + (c > .6 && R() < .5 ? zalgo(String(depth), c) : depth);
+    window.__d = depth; hud.textContent = "READ: " + (c > .6 && R() < .5 ? zalgo(String(depth), c) : depth);
     if (amb && !amb.paused && !amb.error) {
       try { amb.preservesPitch = false; amb.playbackRate = 1 - c * .12; } catch (e) {}
     }
